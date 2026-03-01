@@ -1,0 +1,21 @@
+@startuml
+Client -> SimpleMessageListenerContainer:start
+SimpleMessageListenerContainer->SimpleMessageListenerContainer:checkMismatchedQueues
+SimpleMessageListenerContainer-->ConnectionFactory:newConnection
+ConnectionFactory-->FrameHandlerFactory:create(创建SocketFrameHandler)
+ConnectionFactory->ConnectionFactory:createConnection(创建AMQConnection)
+ConnectionFactory->AMQConnection:start
+AMQConnection->SocketFrameHandler:initialize
+SocketFrameHandler->AMQConnection:startMainLoop(启动主循环读取帧消息\n如果非心跳消息就进行分发
+AMQConnection --> MainLoop:run(启动获取消息线程)
+MainLoop --> SocketFrameHandler: readFrame(循环从socket读取帧消息
+MainLoop -->AMQConnection:readFrame(将处理帧消息
+AMQConnection -->ChannelN:handleFrame
+ChannelN -->ChannelN:handleCompleteInboundCommand(如果的处理body才调用该方法
+ChannelN -->ChannelN:processAsync(异步处理消息
+ChannelN -->ChannelN:processDelivery(通过ConsumerTag获取对应的\nConsumer与队列绑定\n channel会绑定tag
+ChannelN -->ConsumerDispatcher:handleDelivery(进行消息分发
+ConsumerDispatcher -->ConsumerWorkService:execute
+ConsumerWorkService-->InternalConsumer:handleDelivery(把消息缓存到消费队列\nBlockingQueueConsumer.this.queue
+Client <-- AMQConnection:
+@enduml

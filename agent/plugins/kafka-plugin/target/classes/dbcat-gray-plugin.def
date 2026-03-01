@@ -1,0 +1,5 @@
+
+kafka-producer=com.dbcat.gray.agent.kafka.define.KafkaProducerPluginDefine
+kafka-listener=com.dbcat.gray.agent.kafka.define.MessageListenerPluginDefine
+kafka-consumer-container=com.dbcat.gray.agent.kafka.define.ConcurrentMessageListenerContainerPluginDefine
+

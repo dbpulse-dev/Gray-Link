@@ -1,0 +1,25 @@
+@startuml
+client -> ServletInitialHandler: handleRequest(io thread)
+ServletInitialHandler ->ServletInitialHandlerInterceptor:handleFirstRequest\n(task thread 拦截点)
+ServletInitialHandlerInterceptor->ServletInitialHandlerInterceptor:set(设置标签)
+ServletInitialHandlerInterceptor ->HttpHandler:
+HttpHandler -> FilterChain:doFilter
+FilterChain -> Filter:doFilter
+Filter -> DispatcherServlet:doDispatch
+DispatcherServlet --> HandlerAdapter: handle
+HandlerAdapter --> Controller: doBusiness
+HandlerAdapter-->DispatcherServlet:
+DispatcherServlet-->Filter:
+Filter --> FilterChain:
+FilterChain --> HttpHandler
+HttpHandler --> ServletInitialHandlerInterceptor
+ServletInitialHandlerInterceptor -->ServletInitialHandlerInterceptor:remove(清除标签)
+ServletInitialHandlerInterceptor -->ServletInitialHandler:
+client <-- ServletInitialHandler:
+header
+<font size="18" color=#CCCCCC>Author:Blackfost</font>
+endheader
+footer
+<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
+endfooter
+@enduml

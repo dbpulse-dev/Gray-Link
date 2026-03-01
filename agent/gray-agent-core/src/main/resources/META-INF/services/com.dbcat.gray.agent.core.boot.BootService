@@ -1,0 +1,8 @@
+
+com.dbcat.gray.agent.core.server.HttpServer
+com.dbcat.gray.agent.core.InstanceReportService
+com.dbcat.gray.agent.core.TrafficReportService
+com.dbcat.gray.agent.core.GetSubscriptStatusService
+com.dbcat.gray.agent.core.PullInstancesService
+com.dbcat.gray.agent.core.InitEnvStatusService
+

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dbcat.gray.admin.mapper.InstanceTrafficMapper">
+    <resultMap id="entityMap" type="com.dbcat.gray.admin.entity.InstanceTrafficEntity">
+        <id property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="value" column="value"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <sql id="selectBaseColumns">
+        it.id,
+        it.uuid,
+        it.direction,
+        it.`type`,
+        it.`value`,
+        it.name,
+        it.`app_name`
+    </sql>
+
+
+    <select id="list" resultType="com.dbcat.gray.admin.entity.InstanceTrafficEntity">
+        select
+        <include refid="selectBaseColumns"/>
+        from instance_traffic it
+        <where>
+            <if test="searchKey !=null and searchKey !=''">
+                and value LIKE CONCAT('%',#{searchKey},'%')
+            </if>
+            <if test="type !=null and type !=''">
+                and type = #{type}
+            </if>
+        </where>
+
+    </select>
+
+
+    <select id="listByUuid" resultType="com.dbcat.gray.admin.entity.InstanceTrafficEntity">
+        select
+        <include refid="selectBaseColumns"/>
+        from instance_traffic it
+        where uuid = #{uuid}
+
+    </select>
+
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        UPDATE instance_traffic
+        <set>
+            <trim prefix="value=CASE" suffix="END,">
+                <foreach collection="list" item="item">
+                    WHEN id=#{item.id} THEN #{item.value}
+                </foreach>
+            </trim>
+        </set>
+        WHERE id IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <update id="setUpdate">
+        update instance_traffic
+        <set>
+            update_at = now()
+        </set>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="deleteByReportAt">
+        delete from instance_traffic
+        where update_at<![CDATA[ <= ]]> #{reportAt}
+    </delete>
+</mapper>

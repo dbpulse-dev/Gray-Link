@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dbcat.gray.admin.mapper.GrayConditionMapper">
+    <resultMap id="entityMap" type="com.dbcat.gray.admin.entity.GrayConditionEntity">
+        <id property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="value" column="value"/>
+        <result property="weight" column="weight"/>
+        <result property="operators" column="operators"/>
+        <result property="accessTotalCount" column="access_total_count"/>
+        <result property="accessGrayCount" column="access_gray_count"/>
+
+    </resultMap>
+
+    <sql id="selectBaseColumns">
+        gc.id,
+        gc.`type`,
+        gc.`value`,
+        gc.`weight`,
+        gc.`operators`,
+        gc.access_total_count,
+        gc.access_gray_count
+    </sql>
+
+
+    <select id="getExists" resultMap="entityMap">
+        select
+        <include refid="selectBaseColumns"/>
+        from gray_condition gc
+        where
+        type =#{type}
+        and value = #{value}
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into gray_condition (
+        `type`,
+        `value`
+        )
+        values (
+        #{type},
+        #{value}
+        )
+    </insert>
+
+
+    <update id="deleteById">
+        update gray_condition set
+        `deleted` = 1
+        where
+        id = #{id}
+    </update>
+
+
+    <select id="getById" resultMap="entityMap">
+        select
+        <include refid="selectBaseColumns"/>
+        from gray_condition gc
+        where id = #{id}
+    </select>
+
+    <update id="update">
+        update gray_condition
+        <set>
+            <if test="type !=null and type !=''">
+                type = #{type}
+            </if>
+            <if test="enable !=null">
+                ,enable = #{enable}
+            </if>
+            <if test="value !=null and value !=''">
+                ,`value` = #{value}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateAccessCount">
+        update gray_condition set
+        access_total_count = #{accessTotalCount},
+        access_gray_count = #{accessGrayCount}
+        where
+        and gateway_id=#{gatewayId}
+        and `value` = #{value}
+    </update>
+
+    <select id="list" resultType="com.dbcat.gray.admin.entity.GrayConditionEntity">
+        select
+        <include refid="selectBaseColumns"/>
+        from gray_condition gc
+        <where>
+            <if test="searchKey !=null and searchKey !=''">
+                and value LIKE CONCAT('%',#{searchKey},'%')
+            </if>
+            <if test="type !=null and type !=''">
+                and type = #{type}
+            </if>
+        </where>
+
+    </select>
+
+
+</mapper>

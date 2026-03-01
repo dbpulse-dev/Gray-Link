@@ -1,0 +1,63 @@
+[
+  {
+    "type": "CONDITION",
+    "enable": false,
+    "operators": [
+      "EQ"
+    ],
+    "weight": 100,
+    "conditions": [
+      {
+        "name": "userId",
+        "scopes": [
+          {
+            "scope": "header",
+            "name": "member-id"
+          },
+          {
+            "scope": "header",
+            "name": "user-id"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "SIMPLE_WEIGHT",
+    "enable": false,
+    "weight": 80,
+    "operators": [
+      "EQ"
+    ],
+    "conditions": [
+      {
+        "name": "deviceId",
+        "scopes": [
+          {
+            "scope": "header",
+            "name": "device-id"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "HASH_WEIGHT",
+    "enable": true,
+    "weight": 10,
+    "operators": [
+      "EQ"
+    ],
+    "conditions": [
+      {
+        "name": "userId",
+        "scopes": [
+          {
+            "scope": "header",
+            "name": "user-id"
+          }
+        ]
+      }
+    ]
+  }
+]

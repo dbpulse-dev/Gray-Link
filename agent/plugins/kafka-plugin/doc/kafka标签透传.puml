@@ -1,0 +1,23 @@
+@startuml
+client -> Producer: send
+Producer -> MessagePublishInterceptor:
+MessagePublishInterceptor -> MessagePublishInterceptor:setOutContext\n(拦截发出的消息,从threadLocal取出\n标签,并设置到Message Header)
+MessagePublishInterceptor -> MQServer:send\n(消息发送到服务端)
+MQServer -> ConcurrentMessageListenerContainer:start(订阅消息)
+ConcurrentMessageListenerContainer->MessageListener:
+MessageListener -> MessageConsumeInterceptor:
+MessageConsumeInterceptor -> MessageConsumeInterceptor:setInContext\n(把签标从Message Header\n取出,并设置到threadLocal)
+MessageConsumeInterceptor-> BusinessService:invoke(调用业务代码)
+MessageConsumeInterceptor -->MessageConsumeInterceptor:clear(清除标签)
+MessageConsumeInterceptor --> MessageListener:
+MessageListener -->ConcurrentMessageListenerContainer:
+ConcurrentMessageListenerContainer -->MQServer:
+Producer <-- MessagePublishInterceptor:
+client <-- Producer:
+header
+<font size="18" color=#CCCCCC>Author:Blackfost</font>
+endheader
+footer
+<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
+endfooter
+@enduml

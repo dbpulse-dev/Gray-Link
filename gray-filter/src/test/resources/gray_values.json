@@ -1,0 +1,20 @@
+[
+  {
+    "type": "user",
+    "enable": true,
+    "operators": [
+      "EQ"
+    ],
+    "weight": 20,
+    "value": "1234567"
+  },
+  {
+    "type": "header",
+    "enable": true,
+    "operators": [
+      "EQ"
+    ],
+    "weight": 100,
+    "value": "div123"
+  }
+]

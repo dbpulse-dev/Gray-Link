@@ -1,0 +1,21 @@
+@startuml
+Client -> CachingConnectionFactory: newRabbitConnectionFactory(实际的连接工厂)
+Client --> CachingConnectionFactory: afterPropertiesSet(开始初始化)
+CachingConnectionFactory --> CachingConnectionFactory:initCacheWaterMarks
+Client --> RabbitListenerEndpointRegistry:start(端点监听注册)
+RabbitListenerEndpointRegistry-->CachingConnectionFactory:createConnection
+CachingConnectionFactory-->ConnectionFactory:newConnection
+ConnectionFactory-->SocketFrameHandlerFactory:create
+SocketFrameHandlerFactory-->SocketFrameHandlerFactory:createSocket
+SocketFrameHandlerFactory-->Socket:connect(建立sock连接，默认timeout 60S
+SocketFrameHandlerFactory-->ConnectionFactory:(返回SocketFrameHandler）
+ConnectionFactory-->ConnectionFactory:createConnection(\n将SocketFrameHandler\n包装进AMQConnection
+ConnectionFactory-->AMQConnection:start
+AMQConnection-->AMQConnection:initializeConsumerWorkService\n(初始化消费工作线程)
+AMQConnection-->AMQConnection:initializeHeartbeatSender
+AMQConnection-->FrameHandler:sendHeader(发送版本协议信息
+AMQConnection-->FrameHandler:initialize
+AMQConnection-->FrameHandler:startMainLoop(启动主循环读取帧消息，\n如果非心跳消息就进行分发)
+
+Client <-- CachingConnectionFactory:
+@enduml

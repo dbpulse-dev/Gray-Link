@@ -1,0 +1,21 @@
+@startuml
+client -> ConsumerContextFilter: invoke
+ConsumerContextFilter -> ConsumerContextInterceptor:
+ConsumerContextInterceptor -> ConsumerContextInterceptor: setOutContext\n(从threadLocal取出\n标签,并设置到Attachments)
+ConsumerContextInterceptor -> AppRouter:
+AppRouter --> RemoteServer:route\n(据标签匹配实例)
+RemoteServer --> ContextFilter:invoke(收到请求信息)
+ContextFilter->ProviderContextInterceptor:
+ProviderContextInterceptor->ProviderContextInterceptor:setInContext\n(把标签设置到threadLocal)
+ProviderContextInterceptor-> BusinessService:invoke(调用业务代码)
+ProviderContextInterceptor--> ProviderContextInterceptor:clear(清除标签)
+ProviderContextInterceptor--> ContextFilter:
+ContextFilter-->ConsumerContextFilter:
+client <-- ConsumerContextFilter:
+header
+<font size="18" color=#CCCCCC>Author:Blackfost</font>
+endheader
+footer
+<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
+endfooter
+@enduml

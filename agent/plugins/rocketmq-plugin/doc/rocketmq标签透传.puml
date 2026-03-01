@@ -1,0 +1,23 @@
+@startuml
+client -> DefaultMQProducer: send,sendOneway
+DefaultMQProducer -> MessagePublishInterceptor:send,sendOneway\n(消息发送到服务端)
+MessagePublishInterceptor -> MessagePublishInterceptor: setOutContext\n(从threadLocal取出\n标签,并设置到Message userProperty)
+MessagePublishInterceptor -> MQServer:
+MQServer -> DefaultMQPushConsumer:subscribe(订阅消息)
+DefaultMQPushConsumer->MessageListener:
+MessageListener->MessageConsumeInterceptor:
+MessageConsumeInterceptor -> MessageConsumeInterceptor:setInContext\n(把签标从Message userProperty\n取出并,设置到threadLocal)
+MessageConsumeInterceptor-> BusinessService:invoke(调用业务代码)
+MessageConsumeInterceptor -->MessageConsumeInterceptor:clear(清除标签)
+MessageConsumeInterceptor -->MessageListener:
+MessageListener -->DefaultMQPushConsumer:
+DefaultMQPushConsumer -->MQServer
+DefaultMQProducer <-- MessagePublishInterceptor:
+client <-- DefaultMQProducer:
+header
+<font size="18" color=#CCCCCC>Author:Blackfost</font>
+endheader
+footer
+<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
+endfooter
+@enduml

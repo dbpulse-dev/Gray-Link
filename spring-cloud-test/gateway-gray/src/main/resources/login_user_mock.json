@@ -1,0 +1,17 @@
+[
+  {
+    "name": "张三",
+    "accountId": "abc123",
+    "token": "3zwN59atq5Mx1DYoB7rT"
+  },
+  {
+    "name": "李四",
+    "accountId": "abc789",
+    "token": "TVGkQxubP28jo3XBUELN"
+  },
+  {
+    "name": "老王",
+    "accountId": "abc456",
+    "token": "M7WuV1vqjAvsNgJ2q4ot"
+  }
+]

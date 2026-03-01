@@ -1,0 +1,23 @@
+@startuml
+client -> RabbitTemplate: send
+RabbitTemplate -> MessagePublishInterceptor:
+MessagePublishInterceptor -> MessagePublishInterceptor: setOutContext\n(\n从threadLocal取出标签,并设\n置到Message Header)
+MessagePublishInterceptor -> MQServer:send\n(消息发送到服务端)
+MQServer -> SimpleMessageListenerContainer:start(订阅消息)
+SimpleMessageListenerContainer -> MessageListener:
+MessageListener-> MessageListenerInterceptor:
+MessageListenerInterceptor -> MessageListenerInterceptor:setInContext\n(把签标从Message Header\n取出,并设置到threadLocal)
+MessageListenerInterceptor-> BusinessService:invoke(调用业务代码)
+MessageListenerInterceptor --> MessageListenerInterceptor:clear(清理标签)
+MessageListenerInterceptor --> MessageListener:
+MessageListener --> SimpleMessageListenerContainer:
+SimpleMessageListenerContainer --> MQServer:
+RabbitTemplate <-- MessagePublishInterceptor:
+client <-- RabbitTemplate:
+header
+<font size="18" color=#CCCCCC>Author:Blackfost</font>
+endheader
+footer
+<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
+endfooter
+@enduml

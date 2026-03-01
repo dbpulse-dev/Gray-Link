@@ -1,0 +1,33 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: dubbo-server-a
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: 7eacb9c3-6435-4886-847d-fe4ac7fa8812
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+dubbo:
+  protocol:
+    name: dubbo
+    port: 20881
+  registry:
+    address: nacos://localhost:8848
+    parameters:
+      namespace: 7eacb9c3-6435-4886-847d-fe4ac7fa8812
+  provider:
+    retries: 0  # 可选，禁用重试机制
+    timeout: 30000  # 服务调用超时时间（毫秒）
+  consumer:
+    check: false
+  application:
+    name: ${spring.application.name}
+  cloud:
+    enabled: true

@@ -1,0 +1,3 @@
+com.dbcat.gray.agent.rocket.RocketMQListener
+com.dbcat.gray.agent.rabbit.RabbitMQListener
+com.dbcat.gray.agent.kafka.KafkaMQListener

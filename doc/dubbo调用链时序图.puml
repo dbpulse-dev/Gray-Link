@@ -1,0 +1,22 @@
+@startuml
+user -> gateway:用户发起请求
+gateway -> server_a:通过ribbon\n转发到a服务
+server_a -> Filter:请求经过servlet\n的filter
+Filter -> HandlerAdapter:请求经过\n mode&view适配器
+HandlerAdapter -> a服务业务代码:进入业务代码
+a服务业务代码 -> thread:使用线程或池\n发起远程调
+thread -> Router:经过dubbo的Router
+Router -> ConsumerContextFilter:进入dubbo消费端\n上下文filter
+ConsumerContextFilter -> server_b:发起rpc 调用server_b
+server_b -> ContextFilter:请求入进入dubbo\n提供方上下文Filter
+ContextFilter --> b服务业务代码:请求进入b服务\n业务代码
+server_a <-- server_b:
+gateway <-- server_a:
+user <-- gateway: 响应用请求
+header
+<font size="18" color=#CCCCCC>Author:Blackfost</font>
+endheader
+footer
+<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
+endfooter
+@enduml

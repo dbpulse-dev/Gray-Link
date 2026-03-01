@@ -1,0 +1,6 @@
+
+com.dbcat.gray.agent.core.server.endpoint.EnvStatusUpdateEndpoint
+com.dbcat.gray.agent.core.server.endpoint.MQListEndpoint
+com.dbcat.gray.agent.core.server.endpoint.InstanceChangeNotifyEndpoint
+com.dbcat.gray.agent.core.server.endpoint.SubscriptUpdateEndpoint
+

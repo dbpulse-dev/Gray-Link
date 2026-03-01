@@ -1,0 +1,4 @@
+
+rocket-producer=com.dbcat.gray.agent.rocket.define.DefaultMQProducerPluginDefine
+rocket-consumer=com.dbcat.gray.agent.rocket.define.DefaultMQPushConsumerPluginDefine
+rocket-consumer-message=com.dbcat.gray.agent.rocket.define.MessageListenerPluginDefine

@@ -1,0 +1,28 @@
+@startuml
+client -> KafkaListenerEndpointRegistry: start(启动所有topic订阅container)
+KafkaListenerEndpointRegistry --> ConcurrentMessageListenerContainer: start
+
+ConcurrentMessageListenerContainer --> ConcurrentMessageListenerContainer: doStart
+ConcurrentMessageListenerContainer --> ConcurrentMessageListenerContainer: checkTopics
+ConcurrentMessageListenerContainer --> ConcurrentMessageListenerContainer:new KafkaMessageListenerContainer\n(据配置并发数创建多个)
+ConcurrentMessageListenerContainer -->KafkaMessageListenerContainer:start(启动KafkaConsumer订阅
+KafkaMessageListenerContainer -->KafkaMessageListenerContainer:doStart
+KafkaMessageListenerContainer -->KafkaMessageListenerContainer:new ListenerConsumer
+ListenerConsumer --> ConsumerFactory:createConsumer 创建绑定kafkaConsumer
+ListenerConsumer --> ListenerConsumer:subscribeOrAssignTopics 设置订阅的topic
+KafkaMessageListenerContainer --> AsyncListenableTaskExecutor:submitListenable 启动订阅任务
+AsyncListenableTaskExecutor-->ListenerConsumer:run(调用KafkaConsumer循环读取消息)
+ListenerConsumer-->ListenerConsumer:pollAndInvoke()
+ListenerConsumer-->ListenerConsumer:doPoll() 利用KafkaConsumer ConsumerRecords消息
+ListenerConsumer-->ListenerConsumer:invokeListener()
+ListenerConsumer-->ListenerConsumer:doInvokeOnMessage
+ListenerConsumer-->RecordMessagingMessageListenerAdapter:
+RecordMessagingMessageListenerAdapter-->RecordMessagingMessageListenerAdapter:invokeHandler(将要调用业务代码
+client <-- KafkaListenerEndpointRegistry:
+header
+<font size="18" color=#CCCCCC>Author:Blackfost</font>
+endheader
+footer
+<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
+endfooter
+@enduml

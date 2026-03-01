@@ -1,0 +1,13 @@
+-javaagent:D:\workspace\dbx-gray-deploy\dest\gray-agent\gray-agent.jar
+-Dgray.agent.admin_addr=http://localhost:8089
+-Dgray.agent.service_name=server-a
+-Dgray.agent.env=local
+-Dgray.agent.env_status=0
+-Dgray.agent.server_port=6661
+
+-javaagent:D:\workspace\dbx-gray-deploy\dest\gray-agent\gray-agent.jar
+-Dgray.agent.admin_addr=http://localhost:8089
+-Dgray.agent.service_name=server-a
+-Dgray.agent.env=local
+-Dgray.agent.env_status=1
+-Dgray.agent.server_port=6662

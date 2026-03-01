@@ -1,0 +1,4 @@
+
+jdk-threading-callable=com.dbcat.gray.agent.threading.define.CallableDefine
+jdk-threading-runnable=com.dbcat.gray.agent.threading.define.RunnableDefine
+jdk-thread-pool=com.dbcat.gray.agent.threading.define.ThreadPoolExecutorDefine

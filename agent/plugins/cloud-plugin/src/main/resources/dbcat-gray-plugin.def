@@ -1,0 +1,8 @@
+nacos-properties=com.dbcat.gray.agent.cloud.define.NacosDiscoveryPropertiesPluginDefine
+cloud-rule=com.dbcat.gray.agent.cloud.define.RulePluginDefine
+eureka-instance=com.dbcat.gray.agent.cloud.define.InstanceInfoPluginDefine
+feign-context=com.dbcat.gray.agent.cloud.define.FeignTargetPluginDefine
+http-request-context=com.dbcat.gray.agent.cloud.define.ClientHttpRequestInterceptorPluginDefine
+cloud-gateway-context=com.dbcat.gray.agent.cloud.define.FilteringWebHandlerPluginDefine
+
+

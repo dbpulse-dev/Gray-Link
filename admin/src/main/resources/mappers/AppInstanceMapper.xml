@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dbcat.gray.admin.mapper.AppInstanceMapper">
+
+    <sql id="SelectColumnSql">
+        id
+        ,app_name
+        ,ip
+        ,agent_port
+        ,status
+        ,env_status
+        ,start_at
+        ,uuid
+        ,version
+        ,agent_version
+        ,report_at
+        ,hostname
+    </sql>
+
+    <insert id="add">
+        insert into app_instance
+        (
+        app_name
+        ,ip
+        ,agent_port
+        ,hostname
+        ,`status`
+        ,env_status
+        ,subscript_status
+        ,start_at
+        ,uuid
+        ,env
+        ,version
+        ,agent_version
+        ,report_at
+        )
+        values
+        (
+        #{appName}
+        ,#{ip}
+        ,#{agentPort}
+        ,#{hostname}
+        ,#{status}
+        ,#{envStatus}
+        ,#{subscriptStatus}
+        ,#{startAt}
+        ,#{uuid}
+        ,#{env}
+        ,#{version}
+        ,#{agentVersion}
+        ,now()
+        )
+    </insert>
+
+    <select id="getByUuid" resultType="com.dbcat.gray.admin.dto.AppInstanceResponse">
+        select
+        <include refid="SelectColumnSql"></include>
+        from app_instance
+        where uuid=#{uuid} limit 1
+    </select>
+
+    <select id="list" resultType="com.dbcat.gray.admin.dto.AppInstanceResponse">
+        select
+        <include refid="SelectColumnSql"></include>
+        from app_instance
+        <where>
+            <if test="ip !=null">
+                AND ip=#{ip}
+            </if>
+            <if test="status !=null">
+                AND status=#{status}
+            </if>
+            <if test="envStatus !=null">
+                AND env_status=#{envStatus}
+            </if>
+            <if test="appName !=null">
+                AND app_name=#{appName}
+            </if>
+            <if test="searchKey !=null and searchKey !=''">
+                AND (ip like concat('%',#{searchKey},'%') or app_name like concat('%',#{searchKey},'%'))
+            </if>
+
+        </where>
+    </select>
+
+    <select id="getById" resultType="com.dbcat.gray.admin.dto.AppInstanceResponse">
+        select
+        <include refid="SelectColumnSql"></include>
+        from app_instance
+        where id=#{id}
+    </select>
+
+
+    <select id="listStatusByName" resultType="com.dbcat.gray.admin.dto.AppInstanceResponse">
+        select
+        status,
+        env_status envStatus
+        from app_instance where deleted=0
+    </select>
+
+    <select id="listByNames" resultType="com.dbcat.gray.admin.dto.AppInstanceResponse">
+        select
+        <include refid="SelectColumnSql"></include>
+        from app_instance
+        where deleted=0
+        and app_name in
+        <foreach collection="appNames" item="name" open="(" separator="," close=")">
+            #{name}
+        </foreach>
+    </select>
+
+    <delete id="deleteById">
+        delete from app_instance where id=#{id}
+    </delete>
+
+    <delete id="deleteByReportAt">
+        delete from app_instance
+        where report_at<![CDATA[ <= ]]> #{reportAt}
+    </delete>
+
+
+    <update id="updateByCheck">
+        update app_instance
+        <set>
+            status=#{status},
+            message=#{message},
+            check_at=now()
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="updateByReport">
+        update app_instance
+        <set>
+            status=#{status}
+            ,env_status=#{envStatus}
+            ,subscript_status=#{subscriptStatus}
+            <if test="startAt !=null">
+                ,start_at=#{startAt}
+            </if>
+            ,report_at=now()
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>

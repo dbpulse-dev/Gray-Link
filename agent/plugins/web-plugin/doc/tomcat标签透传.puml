@@ -1,0 +1,23 @@
+@startuml
+client -> StandardEngineValve: invoke(拦截点)
+StandardEngineValve -> StandardEngineValveInterceptor:
+StandardEngineValveInterceptor->StandardEngineValveInterceptor:set(设置标签)
+StandardEngineValveInterceptor -> ApplicationFilterChain:
+ApplicationFilterChain -> Filter:doFilter
+Filter -> DispatcherServlet:doDispatch
+DispatcherServlet -> HandlerAdapter: handle
+HandlerAdapter -> Controller: doBusiness
+HandlerAdapter-->DispatcherServlet:
+DispatcherServlet-->Filter:
+Filter --> ApplicationFilterChain:
+ApplicationFilterChain --> StandardEngineValveInterceptor
+StandardEngineValveInterceptor-->StandardEngineValveInterceptor:remove(清除标签)
+StandardEngineValveInterceptor -->StandardEngineValve:
+client <-- StandardEngineValve:
+header
+<font size="18" color=#CCCCCC>Author:Blackfost</font>
+endheader
+footer
+<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
+endfooter
+@enduml

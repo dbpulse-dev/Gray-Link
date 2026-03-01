@@ -1,0 +1,20 @@
+@startuml
+client -> DefaultMQPushConsumer: start
+DefaultMQPushConsumer -> DefaultMQPushConsumerImpl: start(分组订阅)
+DefaultMQPushConsumerImpl -> MQClientInstance: start
+MQClientInstance -> PullMessageService: start(执行run方法\n循环从队列里取出订阅的topic\n,并调pullMessagey方法获取消息
+PullMessageService -> PullMessageService:pullMessage
+PullMessageService -> DefaultMQPushConsumerImpl:pullMessage
+DefaultMQPushConsumerImpl -> PullAPIWrapper:pullKernelImpl
+PullAPIWrapper->MQClientAPIImpl:pullMessage(使用客户端发送命令获取数据
+MQClientAPIImpl->MQClientAPIImpl:pullMessageAsync(异步获取消息)
+MQClientAPIImpl-->NettyRemotingClient:invokeAsync
+NettyRemotingClient-->PullCallback:onSuccess(收到成功消息回调该方法，\n消息将放入本地缓冲队列，\n等待本地消费线程去消费
+client <-- PullMessageService:
+header
+<font size="18" color=#CCCCCC>Author:Blackfost</font>
+endheader
+footer
+<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
+endfooter
+@enduml

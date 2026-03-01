@@ -1,0 +1,6 @@
+
+rabbit-caching-factory=com.dbcat.gray.agent.rabbit.define.CachingConnectionFactoryPluginDefine
+rabbit-queue-consumer=com.dbcat.gray.agent.rabbit.define.BlockingQueueConsumerPluginDefine
+rabbit-template=com.dbcat.gray.agent.rabbit.define.RabbitTemplatePluginDefine
+rabbit-listener-container=com.dbcat.gray.agent.rabbit.define.SimpleMessageListenerPluginDefine
+rabbit-message-listener=com.dbcat.gray.agent.rabbit.define.MessageListenerPluginDefine

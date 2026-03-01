@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dbcat.gray.admin.mapper.AppVersionMapper">
+
+    <sql id="SelectColumnSql">
+        id
+        ,app_name
+        ,env
+        ,env_status
+        ,version
+        ,instance_count
+        ,update_at
+        ,create_at
+    </sql>
+
+    <insert id="add">
+        insert into app_version
+        (
+        app_name
+        ,`env`
+        ,env_status
+        ,version
+        ,update_at
+        ,create_at
+        )
+        values
+        (
+        #{appName}
+        ,#{env}
+        ,#{envStatus}
+        ,#{version}
+        ,now()
+        ,now()
+        )
+    </insert>
+
+
+    <select id="list" resultType="com.dbcat.gray.admin.entity.AppVersionEntity">
+        select
+        <include refid="SelectColumnSql"></include>
+        from app_version
+        <where>
+            <if test="appName !=null and appName !=''">
+                AND app_name=#{appName}
+            </if>
+            <if test="version !=null and version !=''">
+                AND version=#{version}
+            </if>
+            <if test="searchKey !=null and searchKey !=''">
+                AND (ip like concat('%',#{searchKey},'%') or app_name like concat('%',#{searchKey},'%'))
+            </if>
+
+        </where>
+    </select>
+
+    <select id="getByNameAndVersion" resultType="com.dbcat.gray.admin.entity.AppVersionEntity">
+        select
+        <include refid="SelectColumnSql"></include>
+        from app_version
+        where deleted=0
+        and app_name=#{appName}
+        and version=#{version}
+    </select>
+
+    <select id="listByNames" resultType="com.dbcat.gray.admin.entity.AppVersionEntity">
+        select
+        <include refid="SelectColumnSql"></include>
+        from app_version
+        where deleted=0
+        and app_name in
+        <foreach collection="appNames" item="name" open="(" separator="," close=")">
+            #{name}
+        </foreach>
+    </select>
+
+    <update id="updateStatus">
+        update app_version
+        <set>
+            env_status=#{envStatus},
+            update_at=now()
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="updateByReport">
+        update app_version
+        <set>
+            status=#{status}
+            ,env_status=#{envStatus}
+            <if test="startAt !=null">
+                ,start_at=#{startAt}
+            </if>
+            ,report_at=now()
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,29 @@
+@startuml
+Client-> RabbitListenerEndpointRegistrar: registerEndpoint
+Client ->RabbitListenerEndpointRegistrar:registerAllEndpoints
+Client ->RabbitListenerEndpointRegistrar:start
+RabbitListenerEndpointRegistrar ->MessageListenerContainer:start
+MessageListenerContainer ->MessageListenerContainer:doStart(开始初始化消息监听
+MessageListenerContainer ->SimpleMessageListenerContainer:start(通常多个队列\n有多个listenerContainer）
+SimpleMessageListenerContainer ->SimpleMessageListenerContainer:checkMismatchedQueues(创建通道并监听队列消息)
+SimpleMessageListenerContainer ->SimpleMessageListenerContainer:doStart
+SimpleMessageListenerContainer ->SimpleMessageListenerContainer:initializeConsumers(据设定并发数\nBlockingQueueConsumer\n(绑定监听的队列）
+SimpleMessageListenerContainer ->SimpleMessageListenerContainer:创建异步消费处理器\nAsyncMessageProcessingConsumer
+SimpleMessageListenerContainer ->SimpleAsyncTaskExecutor:execute(启动异步消费处理器,每个consumer绑定一个)
+SimpleAsyncTaskExecutor ->AsyncMessageProcessingConsumer:run(运行监控消息任务)
+AsyncMessageProcessingConsumer->AsyncMessageProcessingConsumer:initialize
+AsyncMessageProcessingConsumer->BlockingQueueConsumer:start(启动连接mq server的channel)
+AsyncMessageProcessingConsumer->AsyncMessageProcessingConsumer:mainLoop(如通道正常，循环执行)
+AsyncMessageProcessingConsumer->SimpleMessageListenerContainer:doReceiveAndExecute(consumer接收消息
+SimpleMessageListenerContainer->BlockingQueueConsumer:nextMessage
+BlockingQueueConsumer->BlockingQueueConsumer:handle(从阻塞队列里获取数据\n数据是另一个线程从服务端获取\n并放入阻塞队列)
+SimpleMessageListenerContainer -->SimpleMessageListenerContainer:executeListener(如果收到消息\n并且是非批量处理执行监听)
+SimpleMessageListenerContainer -->SimpleMessageListenerContainer:doExecuteListener(内部通过代理调用实际业务代码)
+Client <-- RabbitListenerEndpointRegistrar:
+header
+<font size="18" color=#CCCCCC>Author:Blackfost</font>
+endheader
+footer
+<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
+endfooter
+@enduml

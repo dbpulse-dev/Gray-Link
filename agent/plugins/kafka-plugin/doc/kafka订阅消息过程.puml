@@ -1,0 +1,17 @@
+@startuml
+client -> ConcurrentMessageListenerContainer:start(分组订阅消息)
+ConcurrentMessageListenerContainer->MessageListener:
+MessageListener -> MessageConsumeInterceptor:
+MessageConsumeInterceptor -> MessageConsumeInterceptor:setInContext\n(把签标从Message Header\n取出,并设置到threadLocal)
+MessageConsumeInterceptor-> BusinessService:invoke(调用业务代码)
+MessageConsumeInterceptor -->MessageConsumeInterceptor:clear(清除标签)
+MessageConsumeInterceptor --> MessageListener:
+MessageListener -->ConcurrentMessageListenerContainer:
+client <-- ConcurrentMessageListenerContainer:
+header
+<font size="18" color=#CCCCCC>Author:Blackfost</font>
+endheader
+footer
+<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
+endfooter
+@enduml

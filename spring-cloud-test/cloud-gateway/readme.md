@@ -1,0 +1,6 @@
+-javaagent:D:\workspace\dbx-gray-deploy\dest\gray-agent\gray-agent.jar
+-Dgray.agent.admin_addr=http://localhost:8089
+-Dgray.agent.service_name=api-gateway
+-Dgray.agent.env=local
+-Dgray.agent.env_status=1
+-Dgray.agent.server_port=16699

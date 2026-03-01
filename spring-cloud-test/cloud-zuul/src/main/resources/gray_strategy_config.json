@@ -1,0 +1,71 @@
+[
+  {
+    "type": "CONDITION",
+    "enable": true,
+    "operators": [
+      "EQ"
+    ],
+    "weight": 100,
+    "conditions": [
+      {
+        "name": "userId",
+        "scopes": [
+          {
+            "scope": "header",
+            "name": "member-id"
+          },
+          {
+            "scope": "header",
+            "name": "user-id"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "CONDITION",
+    "enable": true,
+    "weight": 100,
+    "operators": [
+      "EQ"
+    ],
+    "conditions": [
+      {
+        "name": "deviceId",
+        "scopes": [
+          {
+            "scope": "cookie",
+            "name": "device-id"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "SIMPLE_WEIGHT",
+    "enable": true,
+    "operators": [
+      "EQ"
+    ],
+    "weight": 10
+  },
+  {
+    "type": "HASH_WEIGHT",
+    "enable": true,
+    "weight": 100,
+    "operators": [
+      "EQ"
+    ],
+    "conditions": [
+      {
+        "name": "deviceId",
+        "scopes": [
+          {
+            "scope": "cookie",
+            "name": "device-id"
+          }
+        ]
+      }
+    ]
+  }
+]

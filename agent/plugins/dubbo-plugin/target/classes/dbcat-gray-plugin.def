@@ -1,0 +1,5 @@
+dubbo-app-router=com.dbcat.gray.agent.dubbo.define.AppGrayRouterPluginDefine
+dubbo-provider-config=com.dbcat.gray.agent.dubbo.define.AbstractInterfaceConfigPluginDefine
+dubbo-consumer-context=com.dbcat.gray.agent.dubbo.define.ConsumerConextFilterPluginDefine
+dubbo-provider-context=com.dbcat.gray.agent.dubbo.define.ProviderContextFilterPluginDefine
+

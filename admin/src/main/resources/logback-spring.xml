@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="http://www.padual.com/java/logback.xsd">
+    <springProperty scope="context" name="logLevel" source="logback.level" defaultValue="INFO"/>
+    <!-- 读取spring.application.name中的属性来生成日志文件名 -->
+    <springProperty scope="context" name="logName" source="spring.application.name" defaultValue="official"/>
+    <contextName>${logName}</contextName>
+
+    <!-- 控制台 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <!--logger{36}包名缩略，logger{96}包名全路径-->
+            <pattern>%date %level [%thread] [%logger{36}:%line] - [%X{trace-id}] - %msg%n</pattern>
+            <!--<pattern>%date %level [%logger{96}:%line] - %X{uuid} - %msg%n</pattern>-->
+        </encoder>
+    </appender>
+
+    <!-- INFO 文件 -->
+    <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/${logName}.log</File>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%date %level [%thread] [%logger{36}:%line] - %X{trace-id} - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/${logName}.%d{yyyyMMdd}.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>512MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>20</maxHistory>
+        </rollingPolicy>
+        <!--忽略ERROR日志-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>NEUTRAL</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- ERROR 文件 -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/${logName}.error.log</File>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%date %level [%thread] [%logger{36}:%line] - %X{trace-id} - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/${logName}.%d{yyyyMMdd}.error.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>512MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <!--只保留ERROR日志-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <!--异步日志-->
+    <appender name="ASYNC_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 更改默认的队列的长度,该值会影响性能.默认值为256 -->
+        <queueSize>1000</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="LOG_FILE"/>
+    </appender>
+
+    <!-- 非本地环境配置 -->
+    <springProfile name="!local">
+        <root level="${logLevel}">
+            <!--<appender-ref ref="STDOUT"/>-->
+            <!-- 开启info日志和error日志，error日志会打印到本地 -->
+            <appender-ref ref="ASYNC_APPENDER"/>
+            <appender-ref ref="ERROR_FILE"/>
+        </root>
+    </springProfile>
+
+    <!-- 本地环境配置 -->
+    <springProfile name="dev,local,sit">
+        <root level="${logLevel}">
+            <!-- 只打印到控制台，不记录到文件中 -->
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="ASYNC_APPENDER"/>
+            <appender-ref ref="ERROR_FILE"/>
+        </root>
+    </springProfile>
+</configuration>

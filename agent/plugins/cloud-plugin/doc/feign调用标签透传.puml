@@ -1,0 +1,24 @@
+@startuml
+client -> feign.Target: apply
+feign.Target -> FeignContextInterceptor:
+FeignContextInterceptor -> FeignContextInterceptor:setOutContext\n(拦截远程调用,从threadLocal取出\n标签,并设置到http头)
+FeignContextInterceptor -> IRule:
+IRule -> RuleInterceptor:
+RuleInterceptor ->RemoteServer:choose\n(据标签匹配实例)
+RemoteServer -> WebContextInterceptor:
+WebContextInterceptor->WebContextInterceptor:setInContext\n(拦截收到的消息,\n把标签设置到threadLocal)
+WebContextInterceptor--> BusinessService:invoke(调用业务代码)
+WebContextInterceptor-->WebContextInterceptor:clear(清除标签)
+WebContextInterceptor-->RemoteServer
+RemoteServer-->RuleInterceptor
+RuleInterceptor-->IRule
+IRule-->feign.Target
+client <-- feign.Target:
+
+header
+<font size="18" color=#CCCCCC>Author:Blackfost</font>
+endheader
+footer
+<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
+endfooter
+@enduml

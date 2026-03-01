@@ -20,10 +20,4 @@ BlockingQueueConsumer->BlockingQueueConsumer:handle(从阻塞队列里获取数�
 SimpleMessageListenerContainer -->SimpleMessageListenerContainer:executeListener(如果收到消息\n并且是非批量处理执行监听)
 SimpleMessageListenerContainer -->SimpleMessageListenerContainer:doExecuteListener(内部通过代理调用实际业务代码)
 Client <-- RabbitListenerEndpointRegistrar:
-header
-<font size="18" color=#CCCCCC>Author:Blackfost</font>
-endheader
-footer
-<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
-endfooter
 @enduml

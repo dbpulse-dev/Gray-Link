@@ -19,10 +19,4 @@ ListenerConsumer-->ListenerConsumer:doInvokeOnMessage
 ListenerConsumer-->RecordMessagingMessageListenerAdapter:
 RecordMessagingMessageListenerAdapter-->RecordMessagingMessageListenerAdapter:invokeHandler(将要调用业务代码
 client <-- KafkaListenerEndpointRegistry:
-header
-<font size="18" color=#CCCCCC>Author:Blackfost</font>
-endheader
-footer
-<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
-endfooter
 @enduml

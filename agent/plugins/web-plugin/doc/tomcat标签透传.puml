@@ -14,10 +14,4 @@ ApplicationFilterChain --> StandardEngineValveInterceptor
 StandardEngineValveInterceptor-->StandardEngineValveInterceptor:remove(清除标签)
 StandardEngineValveInterceptor -->StandardEngineValve:
 client <-- StandardEngineValve:
-header
-<font size="18" color=#CCCCCC>Author:Blackfost</font>
-endheader
-footer
-<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
-endfooter
 @enduml

@@ -14,10 +14,4 @@ MessageListener -->ConcurrentMessageListenerContainer:
 ConcurrentMessageListenerContainer -->MQServer:
 Producer <-- MessagePublishInterceptor:
 client <-- Producer:
-header
-<font size="18" color=#CCCCCC>Author:Blackfost</font>
-endheader
-footer
-<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
-endfooter
 @enduml

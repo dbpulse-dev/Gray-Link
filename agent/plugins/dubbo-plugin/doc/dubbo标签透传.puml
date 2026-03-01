@@ -12,10 +12,4 @@ ProviderContextInterceptor--> ProviderContextInterceptor:clear(清除标签)
 ProviderContextInterceptor--> ContextFilter:
 ContextFilter-->ConsumerContextFilter:
 client <-- ConsumerContextFilter:
-header
-<font size="18" color=#CCCCCC>Author:Blackfost</font>
-endheader
-footer
-<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
-endfooter
 @enduml

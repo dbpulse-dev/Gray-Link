@@ -15,10 +15,4 @@ RuleInterceptor-->IRule
 IRule-->feign.Target
 client <-- feign.Target:
 
-header
-<font size="18" color=#CCCCCC>Author:Blackfost</font>
-endheader
-footer
-<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
-endfooter
 @enduml

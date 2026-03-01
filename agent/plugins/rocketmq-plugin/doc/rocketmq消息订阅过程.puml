@@ -11,10 +11,4 @@ MQClientAPIImpl->MQClientAPIImpl:pullMessageAsync(异步获取消息)
 MQClientAPIImpl-->NettyRemotingClient:invokeAsync
 NettyRemotingClient-->PullCallback:onSuccess(收到成功消息回调该方法，\n消息将放入本地缓冲队列，\n等待本地消费线程去消费
 client <-- PullMessageService:
-header
-<font size="18" color=#CCCCCC>Author:Blackfost</font>
-endheader
-footer
-<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
-endfooter
 @enduml

@@ -5,10 +5,4 @@ RebalanceService -> RebalanceService: computePullFromWhere(读取订阅组topic 
 RebalanceService --> RemoteBrokerOffsetStore: readOffset(据topic,broker,queueId读取模式\n读取对应实际的偏移量
 RebalanceService --> RebalanceService:dispatchPullRequest(如果存在可读取消费偏移，则发送偏移消息拉取)
 RebalanceService --> DefaultMQPushConsumerImpl:executePullRequestImmediately\n(发送偏移消息拉取请求)
-header
-<font size="18" color=#CCCCCC>Author:Blackfost</font>
-endheader
-footer
-<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
-endfooter
 @enduml

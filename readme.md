@@ -183,10 +183,7 @@ cd spring-dubbo-test
 ## 📚 文档资源
 
 - [灰度发布设计文档](doc/灰度发布.md)
-- [环境搭建指南](doc/环境搭建.md)
-- [技术实现详解](doc/文档1.md)
-- [Agent 核心实现](doc/文档2.md)
-- [组件增强实践](doc/文档3.md)
+- [CSDN](https://blog.csdn.net/yangyangiud/category_12865143.html)
 
 ## 🤝 贡献指南
 

@@ -16,10 +16,4 @@ HttpHandler --> ServletInitialHandlerInterceptor
 ServletInitialHandlerInterceptor -->ServletInitialHandlerInterceptor:remove(清除标签)
 ServletInitialHandlerInterceptor -->ServletInitialHandler:
 client <-- ServletInitialHandler:
-header
-<font size="18" color=#CCCCCC>Author:Blackfost</font>
-endheader
-footer
-<font size="18" color=#AAAAAA>Wechat:Blackfost</font>
-endfooter
 @enduml
